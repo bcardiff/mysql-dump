@@ -1,6 +1,12 @@
 #!/bin/sh
 DUMP_SCHEDULE=${SCHEDULE:-daily}
 
+if [ ! -z "$TZ" ]
+then
+  cp /usr/share/zoneinfo/$TZ /etc/localtime
+  echo $TZ > /etc/timezone
+fi
+
 case $DUMP_SCHEDULE in
   hourly)
     cp /usr/local/bin/dump /etc/periodic/hourly/
@@ -11,7 +17,7 @@ case $DUMP_SCHEDULE in
   weekly)
     cp /usr/local/bin/dump /etc/periodic/weekly/
     ;;
-  *) 
+  *)
     echo "$DUMP_SCHEDULE /usr/local/bin/dump" >> /etc/crontabs/root
     ;;
 esac

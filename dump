@@ -52,5 +52,13 @@ if [ $RET -ne 0 ]; then
 else
   echo "$end: backup successful."
   cd /backups && ls -lrt | head -n -$RESERVE_NUM | awk '{print $9}' | xargs rm -f
+
+  if [ -z "$CHECK_URL" ]
+  then
+    echo "INFO: Define CHECK_URL with https://healthchecks.io to monitor sync job"
+  else
+    wget $CHECK_URL -O /dev/null
+  fi
+
   exit 0
 fi
